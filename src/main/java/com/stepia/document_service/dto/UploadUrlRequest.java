@@ -4,11 +4,11 @@ import jakarta.validation.constraints.NotBlank;
 
 public record UploadUrlRequest(
 
-        @NotBlank String documentId,
+                @NotBlank String documentId,
 
-        @NotBlank String filename,
+                @NotBlank String filename,
 
-        @NotBlank String contentType
+                @NotBlank String contentType
 
 ) {
 }

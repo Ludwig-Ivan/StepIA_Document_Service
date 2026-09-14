@@ -13,72 +13,72 @@ import java.util.UUID;
 @Service
 public class DocumentStorageService {
 
-    private static final long URL_EXPIRATION_SECONDS = 900;
+        private static final long URL_EXPIRATION_SECONDS = 900;
 
-    private final StorageService storageService;
+        private final StorageService storageService;
 
-    public DocumentStorageService(
-            StorageService storageService) {
-        this.storageService = storageService;
-    }
+        public DocumentStorageService(
+                        StorageService storageService) {
+                this.storageService = storageService;
+        }
 
-    public UploadUrlResponse generateUploadUrl(
-            UploadUrlRequest request) {
+        public UploadUrlResponse generateUploadUrl(
+                        UploadUrlRequest request) {
 
-        String safeFilename = sanitizeFilename(request.filename());
+                String safeFilename = sanitizeFilename(request.filename());
 
-        String storageKey = "clinical-documents/"
-                + request.documentId()
-                + "/"
-                + UUID.randomUUID()
-                + "-"
-                + safeFilename;
+                String storageKey = "clinical-documents/"
+                                + request.documentId()
+                                + "/"
+                                + UUID.randomUUID()
+                                + "-"
+                                + safeFilename;
 
-        String uploadUrl = storageService.generateUploadUrl(
-                storageKey,
-                request.contentType());
+                String uploadUrl = storageService.generateUploadUrl(
+                                storageKey,
+                                request.contentType());
 
-        return new UploadUrlResponse(
-                request.documentId(),
-                storageKey,
-                uploadUrl,
-                URL_EXPIRATION_SECONDS);
-    }
+                return new UploadUrlResponse(
+                                request.documentId(),
+                                storageKey,
+                                uploadUrl,
+                                URL_EXPIRATION_SECONDS);
+        }
 
-    public CompleteUploadResponse completeUpload(
-            String documentId,
-            String storageKey) {
+        public CompleteUploadResponse completeUpload(
+                        String documentId,
+                        String storageKey) {
 
-        boolean exists = storageService.exists(storageKey);
+                boolean exists = storageService.exists(storageKey);
 
-        return new CompleteUploadResponse(
-                documentId,
-                storageKey,
-                exists);
-    }
+                return new CompleteUploadResponse(
+                                documentId,
+                                storageKey,
+                                exists);
+        }
 
-    public DownloadUrlResponse generateDownloadUrl(
-            String storageKey) {
+        public DownloadUrlResponse generateDownloadUrl(
+                        String storageKey) {
 
-        String url = storageService.generateDownloadUrl(
-                storageKey);
+                String url = storageService.generateDownloadUrl(
+                                storageKey);
 
-        return new DownloadUrlResponse(
-                storageKey,
-                url,
-                URL_EXPIRATION_SECONDS);
-    }
+                return new DownloadUrlResponse(
+                                storageKey,
+                                url,
+                                URL_EXPIRATION_SECONDS);
+        }
 
-    public void delete(
-            String storageKey) {
+        public void delete(
+                        String storageKey) {
 
-        storageService.delete(storageKey);
-    }
+                storageService.delete(storageKey);
+        }
 
-    private String sanitizeFilename(
-            String filename) {
+        private String sanitizeFilename(
+                        String filename) {
 
-        return filename
-                .replaceAll("[^a-zA-Z0-9._-]", "_");
-    }
+                return filename
+                                .replaceAll("[^a-zA-Z0-9._-]", "_");
+        }
 }

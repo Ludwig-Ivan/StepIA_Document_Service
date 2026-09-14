@@ -23,6 +23,7 @@ public class DocumentController {
                 this.storageService = storageService;
         }
 
+        // Realiza una solicitud para generar una URL de carga para un documento.
         @PostMapping("/upload-url")
         public ResponseEntity<UploadUrlResponse> generateUploadUrl(
                         @Valid @RequestBody UploadUrlRequest request) {
@@ -31,6 +32,8 @@ public class DocumentController {
                                 storageService.generateUploadUrl(request));
         }
 
+        // Completa la carga de un documento y verifica si el archivo existe en el
+        // almacenamiento.
         @PostMapping("/{documentId}/complete")
         public ResponseEntity<CompleteUploadResponse> completeUpload(
                         @PathVariable String documentId,
@@ -42,6 +45,7 @@ public class DocumentController {
                                                 storageKey));
         }
 
+        // Realiza una solicitud para generar una URL de descarga para un documento.
         @PostMapping("/download-url")
         public ResponseEntity<DownloadUrlResponse> generateDownloadUrl(
                         @Valid @RequestBody DownloadUrlRequest request) {
@@ -51,6 +55,7 @@ public class DocumentController {
                                                 request.storageKey()));
         }
 
+        // Elimina un documento del almacenamiento.
         @DeleteMapping
         public ResponseEntity<Void> delete(
                         @RequestParam String storageKey) {
